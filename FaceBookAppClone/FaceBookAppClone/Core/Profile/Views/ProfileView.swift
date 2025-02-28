@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ProfileView.swift
 //  FaceBookAppClone
 //
 //  Created by Macbook on 27/2/25.
@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ProfileView: View {
+    
+    
     var body: some View {
-        MainTabView()
+        Text("ProfileView")
     }
-}
-
-#Preview {
-    ContentView()
 }
