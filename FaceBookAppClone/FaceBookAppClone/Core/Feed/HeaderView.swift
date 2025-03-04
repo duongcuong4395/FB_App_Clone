@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct HeaderView: View {
-    
+    @State private var showCreatePost: Bool = false
     
     var body: some View {
         HStack {
             NavigationLink {
                 ProfileView()
+                    .navigationBarBackButtonHidden()
             } label: {
                 Image("profilePic")
                     .resizable()
@@ -22,7 +23,7 @@ struct HeaderView: View {
                     .clipShape(Circle())
             }
             Button(action: {
-                
+                showCreatePost.toggle()
             }, label: {
                 HStack {
                     Text("What's on your mind?")
@@ -51,5 +52,8 @@ struct HeaderView: View {
         .padding(.horizontal)
         .padding(.top, 30)
         .padding(.bottom)
+        .fullScreenCover(isPresented: $showCreatePost) {
+            CreatePostView()
+        }
     }
 }

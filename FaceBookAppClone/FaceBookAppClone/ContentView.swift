@@ -6,17 +6,27 @@
 //
 
 import SwiftUI
+import Toasts
 
 struct ContentView: View {
     var body: some View {
-        //MainTabView()
-        RootView {
-            DemoToastView()
+        MainTabView()
+        
+        /*
+        RootView(alignment: .bottom) {
+            VStack {
+                Button("Toats") {
+                    Toast.shared.present(title: "Hello word"
+                                         , symbol: "globe"
+                                         , isUserInteractionEnabled: false
+                                         , timing: .long
+                    )
+                }
+            }
         }
+        
+        */
         
     }
 }
 
-#Preview {
-    ContentView()
-}
