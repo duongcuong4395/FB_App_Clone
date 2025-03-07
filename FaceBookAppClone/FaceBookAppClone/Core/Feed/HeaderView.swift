@@ -9,14 +9,19 @@ import SwiftUI
 
 struct HeaderView: View {
     @State private var showCreatePost: Bool = false
+    @StateObject private var feedVM: FeedViewModel
+    
+    init(feedVM: FeedViewModel) {
+        self._feedVM = StateObject(wrappedValue: feedVM)
+    }
     
     var body: some View {
         HStack {
             NavigationLink {
-                ProfileView()
+                ProfileView(feedVM: feedVM)
                     .navigationBarBackButtonHidden()
             } label: {
-                Image("profilePic")
+                Image(feedVM.users[0].profileImageName ?? "")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)

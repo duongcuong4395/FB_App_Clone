@@ -6,27 +6,36 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct PostView: View {
-    private var facebookBlue: Color
+    //private var facebookBlue: Color
+    private var facebookBlue: Color = Color(red: 26/255, green: 103/255, blue: 178/255)
     
-    init(facebookBlue: Color) {
-        self.facebookBlue = facebookBlue
+    private var isVideo: Bool
+    
+    @StateObject private var feedVM: FeedViewModel
+    private var index: Int
+    
+    init(isVideo: Bool, feedVM: FeedViewModel, index: Int) {
+        self.isVideo = isVideo
+        self._feedVM = StateObject(wrappedValue: feedVM)
+        self.index = index
     }
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image("profilePic")
+                Image(feedVM.posts[index].user?.profileImageName ?? "")
                     .resizable()
                     .scaledToFill()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-
+                
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("Omar Thamri")
+                    Text("\(feedVM.posts[index].user?.firstName ?? "") \(feedVM.posts[index].user?.familyName ?? "")")
                         .font(.system(size: 14, weight: .semibold))
-
+                    
                     HStack(spacing: 5) {
                         Text("1 d")
                         Circle()
@@ -37,9 +46,9 @@ struct PostView: View {
                     .font(.system(size: 12))
                     .foregroundStyle(facebookBlue)
                 }
-
+                
                 Spacer()
-
+                
                 HStack(spacing: 24) {
                     Image(systemName: "ellipsis")
                     Image(systemName: "xmark")
@@ -48,13 +57,20 @@ struct PostView: View {
                 .fontWeight(.bold)
             }
             .padding(.horizontal)
-
-            Text("Time to party with the team")
+            
+            Text(feedVM.posts[index].postTitle)
                 .padding(.horizontal)
-
-            Image("office")
-                .resizable()
-                .scaledToFill()
+            if !isVideo {
+                Image(feedVM.posts[index].postUrl)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                if let url = URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4") {
+                    VideoPlayer(player: AVPlayer(url: url))
+                        .frame(height: 400)
+                }
+                
+            }
             
             HStack(spacing: 3) {
                 Image("like")

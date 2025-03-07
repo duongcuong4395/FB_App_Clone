@@ -9,19 +9,20 @@ import SwiftUI
 
 struct FeedView: View {
     private var facebookBlue: Color = Color(red: 26/255, green: 103/255, blue: 178/255)
-
+    @StateObject private var feedVM = FeedViewModel()
+    
     var body: some View {
         NavigationStack {
             GeometryReader { proxy in
                 ScrollView(showsIndicators: false) {
                     VStack {
-                        HeaderView()
+                        HeaderView(feedVM: feedVM)
                         DividerView(width: proxy.size.width)
-                        StoryFeedView()
+                        StoryFeedView(feedVM: feedVM)
                         DividerView(width: proxy.size.width)
                         
-                        ForEach (0 ..< 3) { _ in
-                            PostView(facebookBlue: facebookBlue)
+                        ForEach(0 ..< feedVM.posts.count) { index in
+                            PostView(isVideo: false, feedVM: feedVM, index: index)
                             DividerView(width: proxy.size.width)
                         }
                         

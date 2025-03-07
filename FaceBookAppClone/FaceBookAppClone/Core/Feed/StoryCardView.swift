@@ -8,15 +8,24 @@
 import SwiftUI
 
 struct StoryCardView: View {
+    
+    @StateObject private var feedVM: FeedViewModel
+    private var index: Int
+    
+    init(feedVM: FeedViewModel, index: Int) {
+        self._feedVM = StateObject(wrappedValue: feedVM)
+        self.index = index
+    }
+    
     var body: some View {
-        Image("Story1")
+        Image(feedVM.friends[index].coverImageName ?? "")
             .resizable()
             .scaledToFill()
             .frame(width: 100, height: 170)
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .overlay {
                 VStack(alignment: .leading) {
-                    Image("profilePic1")
+                    Image(feedVM.friends[index].profileImageName ?? "")
                         .resizable()
                         .scaledToFill()
                         .frame(width: 35, height: 35)
@@ -28,7 +37,7 @@ struct StoryCardView: View {
 
                     Spacer()
 
-                    Text("Jim Halpert")
+                    Text("\(feedVM.friends[index].firstName) \(feedVM.friends[index].familyName)")
                         .foregroundStyle(.white)
                         .font(.system(size: 12, weight: .semibold))
 

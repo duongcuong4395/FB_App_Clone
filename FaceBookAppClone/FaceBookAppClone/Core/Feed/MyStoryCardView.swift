@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct MyStoryCardView: View {
+    @StateObject private var feedVM: FeedViewModel
+    init(feedVM: FeedViewModel) {
+        self._feedVM = StateObject(wrappedValue: feedVM)
+    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 15)
                 .foregroundStyle(Color(.systemGray6))
                 .frame(width: 100, height: 170)
 
-            Image("profilePic")
+            Image(feedVM.users[0].profileImageName ?? "")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 100, height: 110)

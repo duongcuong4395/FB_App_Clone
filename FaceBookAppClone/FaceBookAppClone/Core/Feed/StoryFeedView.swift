@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct StoryFeedView: View {
+    
+    @StateObject private var feedVM: FeedViewModel
+    
+    init(feedVM: FeedViewModel) {
+        self._feedVM = StateObject(wrappedValue: feedVM)
+    }
+    
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
-                MyStoryCardView()
-                ForEach(0 ..< 3) { _ in
-                    StoryCardView()
+                MyStoryCardView(feedVM: feedVM)
+                ForEach(0 ..< feedVM.friends.count) { index in
+                    StoryCardView(feedVM: feedVM, index: index)
                 }
             }
         }

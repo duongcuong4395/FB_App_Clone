@@ -14,6 +14,13 @@ struct ProfileFriendsView: View {
         .init(.flexible(), spacing: 1)
     ]
     
+    @StateObject private var feedVM: FeedViewModel
+    
+    init(feedVM: FeedViewModel) {
+        
+        self._feedVM = StateObject(wrappedValue: feedVM)
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -21,7 +28,7 @@ struct ProfileFriendsView: View {
                     Text("Friends")
                         .font(.headline)
                         .fontWeight(.semibold)
-                    Text("4 friends")
+                    Text("\(feedVM.friends.count) friends")
                         .font(.subheadline)
                         .foregroundStyle(.gray)
                 }
@@ -33,16 +40,16 @@ struct ProfileFriendsView: View {
             }
 
             LazyVGrid(columns: gridItems, spacing: 10) {
-                ForEach(0..<4) { _ in
+                ForEach(feedVM.friends) { friend in
                     VStack {
-                        Image("profilePic1")
+                        Image(friend.profileImageName ?? "")
                             .resizable()
                             .scaledToFill()
                             //.frame(width: (proxy.size.width / 3) - 50, height: (proxy.size.width / 3) - 40)
                             
                             .clipShape(RoundedRectangle(cornerRadius: 8))
-                        Text("Jim Halpert")
-                            .font(.headline)
+                        Text("\(friend.firstName) \(friend.familyName)")
+                            .font(.subheadline)
                             .fontWeight(.semibold)
                     }
                     .padding(.horizontal)

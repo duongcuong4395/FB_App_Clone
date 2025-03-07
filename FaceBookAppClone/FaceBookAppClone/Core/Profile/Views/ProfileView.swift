@@ -11,21 +11,29 @@ struct ProfileView: View {
     @Environment(\.dismiss) private var dismiss
     private var facebookBlue: Color = Color(red: 26/255, green: 103/255, blue: 178/255)
     
+    @StateObject private var feedVM: FeedViewModel
+    
+    init(feedVM: FeedViewModel) {
+        self._feedVM = StateObject(wrappedValue: feedVM)
+    }
+    
     var body: some View {
         GeometryReader { proxy in
             ScrollView(showsIndicators: false) {
                 VStack {
-                    ProfileHeaderView(width: proxy.size.width)
+                    ProfileHeaderView(width: proxy.size.width, feedVM: feedVM)
                     DividerView(width: proxy.size.width)
                     ProfileOptionsView()
                     
-                    ProfileFriendsView()
+                    ProfileFriendsView(feedVM: feedVM)
                     DividerView(width: proxy.size.width)
                     
                     ManageProfilePostsView(width: proxy.size.width)
-                    ForEach(0 ..< 3) { _ in
-                        PostView(facebookBlue: facebookBlue)
+                    
+                    ForEach(0 ..< feedVM.myPostIndexes.count) { index in
+                        PostView(isVideo: false, feedVM: feedVM, index: feedVM.myPostIndexes[index])
                     }
+                    
                 }
                 
                 .scrollIndicators(.hidden)
